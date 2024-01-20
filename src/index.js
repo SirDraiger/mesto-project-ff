@@ -30,17 +30,17 @@ const titleImput = newCardPopup.querySelector(".popup__input_type_card-name");
 const urlImput = newCardPopup.querySelector(".popup__input_type_url");
 
 // Элементы формы просмотра картинки
-export const zoomModal = document.querySelector(".popup_type_image");
+const zoomModal = document.querySelector(".popup_type_image");
 const zoomModalCloseButton = zoomModal.querySelector(".popup__close");
 
 // Вывод карточек на страницу
 initialCards.forEach((arr) => {
-  const newCard = creatCard(arr, deleteCard, likeCard, openModal);
+  const newCard = creatCard(arr, deleteCard, likeCard, handleViewCardImage);
   cardsContainer.append(newCard);
 });
 
 // Функция обработчик отправки формы редактирования профиля
-function handleFormSubmit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
 
   profileName.textContent = nameInput.value;
@@ -57,9 +57,25 @@ function handleAddCard(evt) {
     link: urlImput.value,
   };
 
-  const newCard = creatCard(cardData, deleteCard, likeCard, openModal);
+  const newCard = creatCard(
+    cardData,
+    deleteCard,
+    likeCard,
+    handleViewCardImage
+  );
   cardsContainer.prepend(newCard);
   closeModal(evt.currentTarget);
+}
+
+// Функция обработчик открытия карточки с изображением
+export function handleViewCardImage(evt) {
+  const zoomModalImage = zoomModal.querySelector(".popup__image");
+  const zoomModalDescription = zoomModal.querySelector(".popup__caption");
+  zoomModalImage.src = evt.link;
+  zoomModalImage.alt = `Фотография: ${evt.name}`;
+  zoomModalDescription.textContent = evt.name;
+  console.log(evt);
+  openModal(zoomModal);
 }
 
 // Событие для открытия формы редактирования профиля
@@ -81,13 +97,12 @@ profilePopup.addEventListener("click", (evt) => {
 });
 
 // Событие на нажатие кнопки Сохранить в форме редактирования профиля
-profilePopup.addEventListener("submit", handleFormSubmit);
+profilePopup.addEventListener("submit", handleProfileFormSubmit);
 
 // Событие для открытия формы добавления карточки
 newCardButton.addEventListener("click", () => {
-  // Очищаем поля ввода при открытии формы
-  titleImput.value = "";
-  urlImput.value = "";
+  // Находим элемент формы в модальном окне и сбрасываем его
+  newCardPopup.querySelector(".popup__form").reset();
   openModal(newCardPopup);
 });
 
@@ -101,7 +116,7 @@ newCardPopup.addEventListener("click", (evt) => {
   handleFormOverlay(evt);
 });
 
-// Событие на нажатие кнопки Сохранить в форме редактирования профиля
+// Событие на нажатие кнопки Сохранить в форме добавления карточки
 newCardPopup.addEventListener("submit", handleAddCard);
 
 // Событие на закрытие попапа просмотра картинки в карточке

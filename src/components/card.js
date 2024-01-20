@@ -1,5 +1,5 @@
 // В файле card.js описаны функции для работы с карточками
-import { cardTemplate, zoomModal } from "../index.js";
+import { cardTemplate } from "../index.js";
 
 // Функция создания карточки
 export function creatCard(cardData, delFunc, likeFunc, openModalFunc) {
@@ -12,13 +12,7 @@ export function creatCard(cardData, delFunc, likeFunc, openModalFunc) {
   // Добавляем события для кнопки лайка, кнопки удаления и на изображение карточки
   buttonDelete.addEventListener("click", () => delFunc(cardElement));
   buttonLike.addEventListener("click", () => likeFunc(buttonLike));
-  cardImage.addEventListener("click", () => {
-    const zoomModalImage = zoomModal.querySelector(".popup__image");
-    const zoomModalDescription = zoomModal.querySelector(".popup__caption");
-    zoomModalImage.src = cardImage.src;
-    zoomModalDescription.textContent = cardTitle.textContent;
-    openModalFunc(zoomModal);
-  });
+  cardImage.addEventListener("click", () => openModalFunc(cardData));
 
   // Заполняем ссылку на картику, альтернативный текст картинки и текст заголовка карточки
   cardImage.src = cardData.link;
