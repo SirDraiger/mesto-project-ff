@@ -74,7 +74,6 @@ export function handleViewCardImage(evt) {
   zoomModalImage.src = evt.link;
   zoomModalImage.alt = `Фотография: ${evt.name}`;
   zoomModalDescription.textContent = evt.name;
-  console.log(evt);
   openModal(zoomModal);
 }
 
