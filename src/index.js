@@ -68,7 +68,7 @@ function handleAddCard(evt) {
 }
 
 // Функция обработчик открытия карточки с изображением
-export function handleViewCardImage(cardData) {
+function handleViewCardImage(cardData) {
   const zoomModalImage = zoomModal.querySelector(".popup__image");
   const zoomModalDescription = zoomModal.querySelector(".popup__caption");
   zoomModalImage.src = cardData.link;
