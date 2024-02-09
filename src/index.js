@@ -33,11 +33,11 @@ export const cardTemplate = document.querySelector("#card-template").content;
 // DOM узлы
 const cardsContainer = document.querySelector(".places__list");
 // Элементы формы добавления аватарки
-const avatarEditButton = document.querySelector('.profile__image-edit-button');
-const newAvatarPopup = document.querySelector('.popup_type_new-avatar');
+const avatarEditButton = document.querySelector(".profile__image-edit-button");
+const newAvatarPopup = document.querySelector(".popup_type_new-avatar");
 const newAvatarForm = newAvatarPopup.querySelector(".popup__form");
 const newAvatarCloseButton = newAvatarPopup.querySelector(".popup__close");
-const avatarLinkInput = newAvatarPopup.querySelector('.popup__input_type_url');
+const avatarLinkInput = newAvatarPopup.querySelector(".popup__input_type_url");
 // Элементы формы редактирования профиля
 const profileEditButton = document.querySelector(".profile__edit-button");
 const profilePopup = document.querySelector(".popup_type_edit");
@@ -59,7 +59,6 @@ const urlImput = newCardPopup.querySelector(".popup__input_type_url");
 // Элементы формы просмотра картинки
 const zoomModal = document.querySelector(".popup_type_image");
 const zoomModalCloseButton = zoomModal.querySelector(".popup__close");
-
 
 // Получаем данные по профилю и карточкам.
 Promise.all([getProfileData(), getInitialCards()])
@@ -97,12 +96,11 @@ function fillProfileAvatar(profileData) {
   profileAvatar.style.backgroundImage = `url('${profileData.avatar}')`;
 }
 
-
 // ДОБАВЛЕНИЕ АВАТАРА
 // Событие для открытия формы редактирования аватара
-avatarEditButton.addEventListener('click', () => {
+avatarEditButton.addEventListener("click", () => {
   newAvatarForm.reset();
-  clearValidation(newAvatarForm, validationConfig)
+  clearValidation(newAvatarForm, validationConfig);
   openModal(newAvatarPopup);
 });
 
@@ -122,7 +120,7 @@ newAvatarPopup.addEventListener("submit", (evt) => handleUploadAvatar(evt));
 // Функция обработчик отправки нового аватара
 function handleUploadAvatar(evt) {
   evt.preventDefault();
-  isLoading(newAvatarPopup, 'Сохранение...');
+  isLoading(newAvatarPopup, "Сохранение...");
 
   const avatarLink = avatarLinkInput.value;
 
@@ -132,10 +130,11 @@ function handleUploadAvatar(evt) {
       fillProfileAvatar(response);
       closeModal(newAvatarPopup);
     })
-    .catch((error) => console.log(`При отправке нового аватара произошла ошибка: "${error}"`))
-    .finally(() => isLoading(newAvatarPopup, 'Сохранить'));
+    .catch((error) =>
+      console.log(`При отправке нового аватара произошла ошибка: "${error}"`)
+    )
+    .finally(() => isLoading(newAvatarPopup, "Сохранить"));
 }
-
 
 // РЕДАКТИРОВАНИЕ ДАННЫХ ПРОФИЛЯ
 // Событие для открытия формы редактирования профиля
@@ -163,7 +162,7 @@ profilePopup.addEventListener("submit", handleProfileFormSubmit);
 // Функция обработчик отправки формы редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  isLoading(profilePopup, 'Сохранение...');
+  isLoading(profilePopup, "Сохранение...");
 
   // Отправляем данные из формы на сервер
   sendProfileData(nameInput.value, jobInput.value)
@@ -172,10 +171,11 @@ function handleProfileFormSubmit(evt) {
       profileDescription.textContent = response.about;
       closeModal(profilePopup);
     })
-    .catch((error) => console.log(`При отправке данных профиля произошла ошибка: "${error}"`))
-    .finally(() => isLoading(profilePopup, 'Сохранить'));
+    .catch((error) =>
+      console.log(`При отправке данных профиля произошла ошибка: "${error}"`)
+    )
+    .finally(() => isLoading(profilePopup, "Сохранить"));
 }
-
 
 // ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ
 // Событие для открытия формы добавления карточки
@@ -201,7 +201,7 @@ newCardPopup.addEventListener("submit", handleAddCard);
 // Функция обработчик отправки формы добавления новой карточки
 function handleAddCard(evt) {
   evt.preventDefault();
-  isLoading(newCardPopup, 'Сохранение...');
+  isLoading(newCardPopup, "Сохранение...");
 
   const cardData = {
     name: titleImput.value,
@@ -221,10 +221,13 @@ function handleAddCard(evt) {
       cardsContainer.prepend(newCard);
       closeModal(newCardPopup);
     })
-    .catch((error) => console.log(`При отправке данных новой карточки произошла ошибка: "${error}"`))
-    .finally(() => isLoading(newCardPopup, 'Сохранить'));
+    .catch((error) =>
+      console.log(
+        `При отправке данных новой карточки произошла ошибка: "${error}"`
+      )
+    )
+    .finally(() => isLoading(newCardPopup, "Сохранить"));
 }
-
 
 // ПРОСМОТР КАРТОЧКИ
 // Функция обработчик открытия карточки с изображением
@@ -247,11 +250,10 @@ zoomModal.addEventListener("click", (evt) => {
   handleFormOverlay(evt);
 });
 
-
 // Фунция для изменения текста в кнопке при начале и завершении загрузки
 function isLoading(popupElem, message) {
-  const buttomSubmit = popupElem.querySelector('.button');
-    buttomSubmit.textContent = message;
+  const buttomSubmit = popupElem.querySelector(".button");
+  buttomSubmit.textContent = message;
 }
 
 // Функция для активации валидации
