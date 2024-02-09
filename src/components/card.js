@@ -53,14 +53,6 @@ export function creatCard(cardData, handlerDeleteCard, handlerLikeCard, openModa
   return cardElement;
 }
 
-// Функция удаления карточки
-// export function deleteCard(elem, cardID) {
-//   sendDeleteCard(cardID)
-//     .then(() => elem.remove())
-//     .catch((error) => console.log(error));
-// }
-
-
 export function deleteCard(elem) {
   elem.remove()
 }
