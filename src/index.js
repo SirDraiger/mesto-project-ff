@@ -5,7 +5,7 @@ import {
   closeModal,
   handleFormOverlay,
 } from "./components/modal.js";
-import { creatCard, deleteCard, likeCard } from "./components/card.js";
+import { creatCard, deleteCard, changeLike } from "./components/card.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
 import {
   getInitialCards,
@@ -13,6 +13,9 @@ import {
   sendProfileData,
   sendProfileAvatar,
   sendNewCard,
+  sendLike,
+  sendDeleteLike,
+  sendDeleteCard
 } from "./components/api.js";
 
 // Конфигурация для валидации форм
@@ -58,20 +61,22 @@ const titleImput = newCardPopup.querySelector(".popup__input_type_card-name");
 const urlImput = newCardPopup.querySelector(".popup__input_type_url");
 // Элементы формы просмотра картинки
 const zoomModal = document.querySelector(".popup_type_image");
+const zoomModalImage = zoomModal.querySelector(".popup__image");
+const zoomModalDescription = zoomModal.querySelector(".popup__caption");
 const zoomModalCloseButton = zoomModal.querySelector(".popup__close");
 
 // Получаем данные по профилю и карточкам.
 Promise.all([getProfileData(), getInitialCards()])
-  .then(([ProfileData, InitialCards]) => {
+  .then(([profileData, initialCards]) => {
     // Заполняем данные профиля
-    fillProfileData(ProfileData);
+    fillProfileData(profileData);
 
     // Выводим карточки на страницу
-    InitialCards.forEach((arr) => {
+    initialCards.forEach((arr) => {
       const newCard = creatCard(
         arr,
-        deleteCard,
-        likeCard,
+        handlerDeleteCard,
+        handlerLikeCard,
         handleViewCardImage,
         userID
       );
@@ -213,8 +218,8 @@ function handleAddCard(evt) {
     .then((response) => {
       const newCard = creatCard(
         response,
-        deleteCard,
-        likeCard,
+        handlerDeleteCard,
+        handlerLikeCard,
         handleViewCardImage,
         userID
       );
@@ -229,11 +234,12 @@ function handleAddCard(evt) {
     .finally(() => isLoading(newCardPopup, "Сохранить"));
 }
 
+
 // ПРОСМОТР КАРТОЧКИ
 // Функция обработчик открытия карточки с изображением
 function handleViewCardImage(cardData) {
-  const zoomModalImage = zoomModal.querySelector(".popup__image");
-  const zoomModalDescription = zoomModal.querySelector(".popup__caption");
+  // const zoomModalImage = zoomModal.querySelector(".popup__image");
+  // const zoomModalDescription = zoomModal.querySelector(".popup__caption");
   zoomModalImage.src = cardData.link;
   zoomModalImage.alt = `Фотография: ${cardData.name}`;
   zoomModalDescription.textContent = cardData.name;
@@ -254,6 +260,36 @@ zoomModal.addEventListener("click", (evt) => {
 function isLoading(popupElem, message) {
   const buttomSubmit = popupElem.querySelector(".button");
   buttomSubmit.textContent = message;
+}
+
+
+// УДАЛЕНИЕ КАРТОЧКИ
+function handlerDeleteCard(card, cardID, deleteCard) {
+  sendDeleteCard(cardID)
+    .then(() => deleteCard(card))
+    .catch((error) => console.log(
+      `При попытке удалить карточку произошла ошибка: "${error}"`
+    ));
+}
+
+
+// ЛАЙК КАРТОЧКИ
+// Функция обработчик лайков
+function handlerLikeCard(buttonLike, cardID, cardLikeCount, likeStatus) {
+  // Проверяем состояние кнопки лайка
+  if (!likeStatus) {
+    sendLike(cardID)
+      .then((response) => {
+        changeLike(response, buttonLike, cardLikeCount);
+      })
+      .catch((error) => console.log(error));
+  } else {
+    sendDeleteLike(cardID)
+      .then((response) => {
+        changeLike(response, buttonLike, cardLikeCount);
+      })
+      .catch((error) => console.log(error));
+  }
 }
 
 // Функция для активации валидации

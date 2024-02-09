@@ -7,17 +7,20 @@ const config = {
   },
 };
 
+// Функция проверки ответа на запрос
+const checkResponse = (response) => {
+  if (response.ok) {
+    return response.json();
+  } else {
+    return Promise.reject(`Ошибка: ${response.status}`);
+  }
+};
+
 // Запрос информации по пользователю
 export function getProfileData() {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      return Promise.reject(`Ошибка: ${response.status}`);
-    }
-  });
+  }).then((response) => checkResponse(response));
 }
 
 // Запрос на изменение данных профиля
@@ -29,13 +32,7 @@ export function sendProfileData(nameImput, jobInput) {
       name: nameImput,
       about: jobInput,
     }),
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      return Promise.reject(`Ошибка: ${response.status}`);
-    }
-  });
+  }).then((response) => checkResponse(response));
 }
 
 // Запрос на изменение аватара
@@ -46,26 +43,14 @@ export function sendProfileAvatar(avatarLink) {
     body: JSON.stringify({
       avatar: avatarLink,
     }),
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      return Promise.reject(`Ошибка: ${response.status}`);
-    }
-  });
+  }).then((response) => checkResponse(response));
 }
 
 // Запрос информации по карточкам
 export function getInitialCards() {
   return fetch(`${config.baseUrl}cards`, {
     headers: config.headers,
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      return Promise.reject(`Ошибка: ${response.status}`);
-    }
-  });
+  }).then((response) => checkResponse(response));
 }
 
 // Запрос на отправку новой карточки
@@ -77,13 +62,7 @@ export function sendNewCard(cardName, cardLink) {
       name: cardName,
       link: cardLink,
     }),
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      return Promise.reject(`Ошибка: ${response.status}`);
-    }
-  });
+  }).then((response) => checkResponse(response));
 }
 
 // Запрос на удаление карточки
@@ -91,13 +70,7 @@ export function sendDeleteCard(cardID) {
   return fetch(`${config.baseUrl}cards/${cardID}`, {
     method: "DELETE",
     headers: config.headers,
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      return Promise.reject(`Ошибка: ${response.status}`);
-    }
-  });
+  }).then((response) => checkResponse(response));
 }
 
 // Запрос на отправку лайка
@@ -105,13 +78,7 @@ export function sendLike(cardID) {
   return fetch(`${config.baseUrl}cards/likes/${cardID}`, {
     method: "PUT",
     headers: config.headers,
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      return Promise.reject(`Ошибка: ${response.status}`);
-    }
-  });
+  }).then((response) => checkResponse(response));
 }
 
 // Запрос на удаление лайка
@@ -119,11 +86,5 @@ export function sendDeleteLike(cardID) {
   return fetch(`${config.baseUrl}cards/likes/${cardID}`, {
     method: "DELETE",
     headers: config.headers,
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      return Promise.reject(`Ошибка: ${response.status}`);
-    }
-  });
+  }).then((response) => checkResponse(response));
 }
