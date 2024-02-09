@@ -5,7 +5,7 @@ import {
   closeModal,
   handleFormOverlay,
 } from "./components/modal.js";
-import { creatCard, deleteCard, changeLike } from "./components/card.js";
+import { creatCard, changeLike } from "./components/card.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
 import {
   getInitialCards,
@@ -19,7 +19,7 @@ import {
 } from "./components/api.js";
 
 // Конфигурация для валидации форм
-export const validationConfig = {
+const validationConfig = {
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
   submitButtonSelector: ".popup__button",
