@@ -72,9 +72,9 @@ Promise.all([getProfileData(), getInitialCards()])
     fillProfileData(profileData);
 
     // Выводим карточки на страницу
-    initialCards.forEach((arr) => {
+    initialCards.forEach((elem) => {
       const newCard = creatCard(
-        arr,
+        elem,
         handlerDeleteCard,
         handlerLikeCard,
         handleViewCardImage,
@@ -238,8 +238,6 @@ function handleAddCard(evt) {
 // ПРОСМОТР КАРТОЧКИ
 // Функция обработчик открытия карточки с изображением
 function handleViewCardImage(cardData) {
-  // const zoomModalImage = zoomModal.querySelector(".popup__image");
-  // const zoomModalDescription = zoomModal.querySelector(".popup__caption");
   zoomModalImage.src = cardData.link;
   zoomModalImage.alt = `Фотография: ${cardData.name}`;
   zoomModalDescription.textContent = cardData.name;

@@ -54,7 +54,7 @@ export function creatCard(cardData, handlerDeleteCard, handlerLikeCard, openModa
 }
 
 // Функция удаления карточки
-export function deleteCard(elem) {
+function deleteCard(elem) {
   elem.remove()
 }
 
